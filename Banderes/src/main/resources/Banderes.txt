@@ -1,0 +1,3 @@
+Andorra:blau,groc,vermell
+Italia:verd,blanc,vermell
+Portugal:verd,vermell
