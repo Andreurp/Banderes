@@ -89,8 +89,12 @@ public class BandreresController implements Initializable {
 		int k=0;
 		if (totalBanderesTrobades.get(nomPais) != null) {
 			k = totalBanderesTrobades.get(nomPais);
+			if(k < nBanderes){
+				totalBanderesTrobades.put(nomPais, nBanderes);
+			}
+		}else{
+			totalBanderesTrobades.put(nomPais, nBanderes);
 		}
-		totalBanderesTrobades.put(nomPais, k + nBanderes);
 
 		for (Map.Entry<String, Integer> entry : totalBanderesTrobades.entrySet()) {
 			String key = entry.getKey();
@@ -99,6 +103,22 @@ public class BandreresController implements Initializable {
 
 		}
 		lvRecortPais.setItems(items);
+		
+		String textServidor = tbaText.getText();
+		String textRecort = tbaTextRecort.getText();
+		int nGran = 0;
+		if(textRecort.equals("")){
+			tbaTextRecort.setText(textServidor);
+		}
+		for(Map.Entry<String, Integer> entry : totalBanderesTrobades.entrySet()){
+			int value = entry.getValue();
+			if(value > nGran){
+				nGran = value;
+			}
+		}
+		if(nBanderes > nGran){
+			tbaTextRecort.setText(textServidor);
+		}
 	}
 
 	private void obtenirTextColors() throws IOException {
