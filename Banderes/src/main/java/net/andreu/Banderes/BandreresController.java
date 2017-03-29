@@ -65,15 +65,19 @@ public class BandreresController implements Initializable {
 		int colorBusca = 0;
 		String nomPais = cbxPais.getValue();
 		tbxNomPais.setText(nomPais);
+		
+		String textServidor = tbaText.getText();
+		String textRecort = tbaTextRecort.getText();
+		int nGran = 0;
 
 		obtenirTextColors();
-
+		// Mirar en quina posició esta el pais sel·leccionat dins l'arrray
 		while (!nomPais.equals(paisos.get(posicioPais).getNom()) && posicioPais < paisos.size()) {
 			posicioPais++;
 
 		}
 		String[] bandera = paisos.get(posicioPais).getColors();
-
+		// Comparar els colrs de la bandera i buscar seqüencies correctes
 		for (int i = 0; i < colors.length; i++) {
 			if (bandera[colorBusca].equals(colors[i])) {
 				colorBusca++;
@@ -84,7 +88,19 @@ public class BandreresController implements Initializable {
 			}
 		}
 		tbxNumTrobades.setText("" + nBanderes);
-		
+		//Pusar el primer text a record
+		if(textRecort.equals("")){
+			tbaTextRecort.setText(textServidor);
+		}
+		// Recorra el mapa i mirar quin es el record
+		for(Map.Entry<String, Integer> entry : totalBanderesTrobades.entrySet()){
+			String key = entry.getKey();
+			int value = entry.getValue();
+			if(value > nGran){
+				nGran = value;
+			}
+		}
+		// Mirar si el Pais a fet un record de banderes i pusal a la llista
 		ObservableList<String> items = FXCollections.observableArrayList();
 		int k=0;
 		if (totalBanderesTrobades.get(nomPais) != null) {
@@ -95,7 +111,7 @@ public class BandreresController implements Initializable {
 		}else{
 			totalBanderesTrobades.put(nomPais, nBanderes);
 		}
-
+		
 		for (Map.Entry<String, Integer> entry : totalBanderesTrobades.entrySet()) {
 			String key = entry.getKey();
 			int value = entry.getValue();
@@ -104,18 +120,7 @@ public class BandreresController implements Initializable {
 		}
 		lvRecortPais.setItems(items);
 		
-		String textServidor = tbaText.getText();
-		String textRecort = tbaTextRecort.getText();
-		int nGran = 0;
-		if(textRecort.equals("")){
-			tbaTextRecort.setText(textServidor);
-		}
-		for(Map.Entry<String, Integer> entry : totalBanderesTrobades.entrySet()){
-			int value = entry.getValue();
-			if(value > nGran){
-				nGran = value;
-			}
-		}
+		// Anar canviant el text de record segons el record de banderes 
 		if(nBanderes > nGran){
 			tbaTextRecort.setText(textServidor);
 		}
